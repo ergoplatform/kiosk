@@ -7,12 +7,14 @@ import kiosk.ergo._
 import org.bouncycastle.util.encoders.Hex
 import org.ergoplatform.appkit._
 import org.ergoplatform.{ErgoAddress, Pay2SAddress}
-import org.scalatest.{Matchers, WordSpec}
 import sigmastate.Values
 import sigmastate.eval._
-import sigmastate.interpreter.CryptoConstants
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
+import sigmastate.crypto.CryptoConstants
 
-class ScriptSpec extends WordSpec with Matchers {
+
+class ScriptSpec extends AnyWordSpec with Matchers {
   "Kiosk" should {
     "compile script #1 correctly" in {
       val ergoScript =

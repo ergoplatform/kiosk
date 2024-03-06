@@ -4,6 +4,7 @@ import kiosk.encoding.ScalaErgoConverters
 import kiosk.ergo.KioskType
 import kiosk.script.ScriptUtil
 import scorex.crypto.hash.Blake2b256
+import sigmastate.Values.SigmaBoolean
 
 import scala.collection.mutable.{Map => MMap}
 
@@ -175,6 +176,7 @@ trait OraclePool {
 
   import ScalaErgoConverters._
 
+//  throw new Exception(env.toMap.get("oracleTokenId").get.value.toString)
   val liveEpochErgoTree = ScriptUtil.compile(env.toMap, liveEpochScript)
   env.setCollByte("liveEpochScriptHash", Blake2b256(liveEpochErgoTree.bytes))
   val epochPrepErgoTree = ScriptUtil.compile(env.toMap, epochPrepScript)

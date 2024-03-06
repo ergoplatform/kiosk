@@ -2,15 +2,14 @@ package kiosk.multisecret
 
 import kiosk.ergo._
 import kiosk.tx.TxUtil
-import org.ergoplatform.appkit.{BlockchainContext, ConstantsBuilder, HttpClientTesting, InputBox}
-import org.scalatest.{Matchers, PropSpec}
-import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
+import org.ergoplatform.appkit.{BlockchainContext, ConstantsBuilder, HttpClientTesting, InputBox, MockErgoClient}
+import org.scalatest.matchers.should.Matchers
 import sigmastate.eval._
-import sigmastate.interpreter.CryptoConstants
-import special.sigma.GroupElement
+import org.scalatest.propspec.AnyPropSpec
+import sigma.GroupElement
+import sigmastate.crypto.CryptoConstants
 
-class MultiProveDlogSpec extends PropSpec with Matchers with ScalaCheckDrivenPropertyChecks with HttpClientTesting {
-  val ergoClient = createMockedErgoClient(MockData(Nil, Nil))
+class MultiProveDlogSpec extends MockErgoClient {
 
   val changeAddress = "9f5ZKbECVTm25JTRQHDHGM5ehC8tUw5g1fCBQ4aaE792rWBFrjK"
   val dummyTxId1 = "d9e5ce5aa0d95f5d54a7bc89c46730d9662397067250aa18a0039631c0f5b809"
@@ -24,8 +23,8 @@ class MultiProveDlogSpec extends PropSpec with Matchers with ScalaCheckDrivenPro
   private val gX: GroupElement = defaultGenerator.exp(secret1.bigInteger)
   private val gY: GroupElement = defaultGenerator.exp(secret2.bigInteger)
 
-  property("Multi proveDlog") {
-    ergoClient.execute { implicit ctx: BlockchainContext =>
+  property("Multi proveDlog") { ergo =>
+    ergo.client.execute { implicit ctx: BlockchainContext =>
       val fee = 1500000
       val contract1 = ctx.compileContract(
         ConstantsBuilder

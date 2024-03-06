@@ -4,18 +4,16 @@ import kiosk.ergo.{DhtData, KioskBox, KioskCollByte, KioskInt, KioskLong}
 import kiosk.nonlazy.Split.splitAddress
 import kiosk.tx.TxUtil
 import org.ergoplatform.appkit._
-import org.scalatest.{Matchers, PropSpec}
-import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.propspec.AnyPropSpec
+class SplitSpec extends MockErgoClient {
 
-class SplitSpec extends PropSpec with Matchers with ScalaCheckDrivenPropertyChecks with HttpClientTesting {
-
-  val ergoClient = createMockedErgoClient(MockData(Nil, Nil))
   val changeAddress = "9f5ZKbECVTm25JTRQHDHGM5ehC8tUw5g1fCBQ4aaE792rWBFrjK"
   val dummyTxId = "f9e5ce5aa0d95f5d54a7bc89c46730d9662397067250aa18a0039631c0f5b809"
   val dummyScript = "{sigmaProp(1 < 2)}"
 
-  property("Not-so-lazy evaluation") {
-    ergoClient.execute { implicit ctx: BlockchainContext =>
+  property("Not-so-lazy evaluation") { ergo =>
+    ergo.client.execute { implicit ctx: BlockchainContext =>
       assert(
         splitAddress == "2PELCgrp5nNgVKMAEky7GjT8VxL7Xsc7z7ocVcEW4e1zhKSrzwVSavg3C4AbbN2xM4vRSFQv4EVDarTChJnwg6wwEURFj5VjMv7nVpAm8jaahzZZoJJqJRHaEu2zteSzMXsYBHGsQDD5m5JPsp3hkZ8qzXcgBd29TzTfEqh9i8FnFe3X")
 

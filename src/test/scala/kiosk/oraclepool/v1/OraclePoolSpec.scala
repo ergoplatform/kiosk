@@ -5,16 +5,15 @@ import kiosk.encoding.ScalaErgoConverters
 import kiosk.ergo._
 import kiosk.tx.TxUtil
 import org.ergoplatform.appkit._
-import org.scalatest.{Matchers, PropSpec}
-import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
+import org.ergoplatform.sdk.ErgoToken
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.propspec.AnyPropSpec
 
-class OraclePoolSpec extends PropSpec with Matchers with ScalaCheckDrivenPropertyChecks with HttpClientTesting {
+class OraclePoolSpec extends MockErgoClient {
 
-  val ergoClient = createMockedErgoClient(MockData(Nil, Nil))
 
-  property("One complete epoch") {
-
-    ergoClient.execute { implicit ctx: BlockchainContext =>
+  property("One complete epoch") { ergo =>
+    ergo.client.execute { implicit ctx: BlockchainContext =>
       val pool = new OraclePool {
         val minBoxValue = 2000000
         override lazy val livePeriod = 4 // blocks

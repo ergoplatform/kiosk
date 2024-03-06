@@ -4,11 +4,12 @@ import kiosk.encoding.ScalaErgoConverters
 import kiosk.ergo._
 import kiosk.tx.TxUtil
 import org.ergoplatform.appkit._
-import org.scalatest.{Matchers, PropSpec}
-import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
+import org.ergoplatform.sdk.ErgoToken
 import scorex.crypto.hash.Blake2b256
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.propspec.AnyPropSpec
 
-class UpdateSpec extends PropSpec with Matchers with ScalaCheckDrivenPropertyChecks with HttpClientTesting {
+class UpdateSpec extends MockErgoClient {
   /*
   In Oracle Pool v6, the epochPrepScript has two spending paths:
   1. poolAction
@@ -20,12 +21,11 @@ class UpdateSpec extends PropSpec with Matchers with ScalaCheckDrivenPropertyChe
   val dummyTxId = "f9e5ce5aa0d95f5d54a7bc89c46730d9662397067250aa18a0039631c0f5b809"
   val dummyScript = "sigmaProp(true)"
 
-  val ergoClient = createMockedErgoClient(MockData(Nil, Nil))
 
   val fee = 1500000
 
-  property("Update") {
-    ergoClient.execute { implicit ctx: BlockchainContext =>
+  property("Update") { ergo =>
+    ergo.client.execute { implicit ctx: BlockchainContext =>
       val poolBoxIn = 2518217000L
 
       val epochPool = new OraclePoolLive {}

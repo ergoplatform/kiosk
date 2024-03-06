@@ -2,16 +2,17 @@ package kiosk
 
 import kiosk.encoding.ScalaErgoConverters
 import org.bouncycastle.util.encoders.Hex
-import org.ergoplatform.appkit.{BlockchainContext, ErgoToken, ErgoType, ErgoValue, InputBox, OutBox}
+import org.ergoplatform.appkit.{BlockchainContext, ErgoType, ErgoValue, InputBox, OutBox}
+import org.ergoplatform.sdk.ErgoToken
 import sigmastate.SGroupElement
 import sigmastate.Values.{ByteArrayConstant, CollectionConstant, ErgoTree}
-import sigmastate.basics.SecP256K1
+import sigmastate.crypto.SecP256K1Group
 import sigmastate.eval.SigmaDsl
 import sigmastate.serialization.ErgoTreeSerializer.DefaultSerializer
 import sigmastate.serialization.ValueSerializer
-import special.collection.Coll
-import special.sigma
-import special.sigma.GroupElement
+import sigma.Coll
+import sigma.Colls
+import sigma.GroupElement
 
 import scala.io.BufferedSource
 import scala.util.Try
@@ -21,13 +22,13 @@ package object ergo {
     def decodeHex = Hex.decode(string)
   }
 
-  implicit def ByteArrayToBetterByteArray(bytes: Array[Byte]) = new BetterByteArray(bytes)
+  implicit def ByteArrayToBetterByteArray(bytes: Array[Byte]): BetterByteArray = new BetterByteArray(bytes)
 
   class BetterByteArray(bytes: Seq[Byte]) {
     def encodeHex: String = Hex.toHexString(bytes.toArray).toLowerCase
   }
 
-  implicit def StringToBetterString(string: String) = new BetterString(string)
+  implicit def StringToBetterString(string: String): BetterString = new BetterString(string)
 
   sealed trait KioskType[T] {
     val serialize: Array[Byte]
@@ -40,7 +41,7 @@ package object ergo {
   }
 
   case class KioskCollByte(arrayBytes: Array[Byte]) extends KioskType[Coll[Byte]] {
-    override val value: Coll[Byte] = sigmastate.eval.Colls.fromArray(arrayBytes)
+    override val value: Coll[Byte] = Colls.fromArray(arrayBytes)
     override val serialize: Array[Byte] = ValueSerializer.serialize(ByteArrayConstant(value))
     override def toString: String = arrayBytes.encodeHex
     override val typeName: String = "Coll[Byte]"
@@ -48,7 +49,7 @@ package object ergo {
   }
 
   case class KioskCollGroupElement(groupElements: Array[GroupElement]) extends KioskType[Coll[GroupElement]] {
-    override val value: Coll[GroupElement] = sigmastate.eval.Colls.fromArray(groupElements)
+    override val value: Coll[GroupElement] = Colls.fromArray(groupElements)
     override val serialize: Array[Byte] = ValueSerializer.serialize(CollectionConstant[SGroupElement.type](value, SGroupElement))
     override def toString: String = "[" + groupElements.map(_.getEncoded.toArray.encodeHex).reduceLeft(_ + "," + _) + "]"
     override val typeName: String = "Coll[GroupElement]"
@@ -83,7 +84,7 @@ package object ergo {
     def +(that: KioskGroupElement) = KioskGroupElement(value.multiply(that.value))
   }
 
-  lazy val PointAtInfinity = KioskGroupElement(SigmaDsl.GroupElement(SecP256K1.identity))
+  lazy val PointAtInfinity = KioskGroupElement(SigmaDsl.GroupElement(SecP256K1Group.identity))
 
   case class KioskErgoTree(value: ErgoTree) extends KioskType[ErgoTree] {
     override val serialize: Array[Byte] = DefaultSerializer.serializeErgoTree(value)
@@ -93,7 +94,7 @@ package object ergo {
     override def toString: ID = "<ergo tree>"
   }
 
-  implicit def groupElementToKioskGroupElement(g: GroupElement) = KioskGroupElement(g)
+  implicit def groupElementToKioskGroupElement(g: GroupElement): KioskGroupElement = KioskGroupElement(g)
 
   case class DhtData(g: GroupElement, h: GroupElement, u: GroupElement, v: GroupElement, x: BigInt)
 

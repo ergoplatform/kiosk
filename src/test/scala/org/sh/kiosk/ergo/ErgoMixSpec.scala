@@ -3,12 +3,12 @@ package org.sh.kiosk.ergo
 import kiosk.ergo._
 import kiosk.script.ScriptUtil
 import org.ergoplatform.Pay2SAddress
-import org.scalatest.{Matchers, WordSpec}
 import sigmastate.serialization.ErgoTreeSerializer.DefaultSerializer
-
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import scala.collection.mutable.{Map => MMap}
 
-class ErgoMixSpec extends WordSpec with Matchers with ErgoMix {
+class ErgoMixSpec extends AnyWordSpec with Matchers with ErgoMix {
 
   import kiosk.script.ScriptUtil._
 

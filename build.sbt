@@ -4,16 +4,17 @@ version := "0.1"
 
 updateOptions := updateOptions.value.withLatestSnapshots(false)
 
-scalaVersion := "2.12.10"
+scalaVersion := "2.13.12"
 
 libraryDependencies ++= Seq(
-  "org.scala-lang.modules" %% "scala-collection-compat" % "2.1.3",
-  "org.bouncycastle" % "bcprov-jdk15on" % "1.+",
-  "org.ergoplatform" %% "ergo-appkit" % "4.0.3",
-  "com.squareup.okhttp3" % "mockwebserver" % "3.14.9" % Test,
-  "org.scalatest" %% "scalatest" % "3.0.8" % Test,
-  "org.scalacheck" %% "scalacheck" % "1.14.+" % Test,
-  "org.mockito" % "mockito-core" % "2.23.4" % Test
+  "org.scala-lang.modules" %% "scala-collection-compat" % "2.11.0",
+//  "org.bouncycastle" % "bcprov-jdk15on" % "1.70",
+  "org.ergoplatform" %% "ergo-appkit" % "5.0.4",
+  "com.squareup.okhttp3" % "mockwebserver" % "4.12.0" % Test,
+  "org.scalatest" %% "scalatest" % "3.2.18" % Test,
+  "org.scalatestplus" %% "scalacheck-1-17" % "3.2.18.0" % Test,
+  "org.scalacheck" %% "scalacheck" % "1.17.0" % Test,
+  "org.mockito" % "mockito-core" % "5.11.0" % Test
 )
 
 resolvers ++= Seq(

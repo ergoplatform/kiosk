@@ -4,13 +4,13 @@ import kiosk.ErgoUtil
 import kiosk.ergo._
 import kiosk.script.ScriptUtil
 import org.ergoplatform.Pay2SAddress
-import org.scalatest.{Matchers, WordSpec}
 import scorex.crypto.hash.Blake2b256
 import sigmastate.serialization.ErgoTreeSerializer.DefaultSerializer
-
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import scala.collection.mutable.{Map => MMap}
 
-class YieldProtocolSpec extends WordSpec with Matchers with YieldProtocol {
+class YieldProtocolSpec extends AnyWordSpec with Matchers with YieldProtocol {
 
   "InterestFreeLoan script" should {
     "compile correctly" in {

@@ -6,12 +6,11 @@ import kiosk.script.ScriptUtil
 import org.ergoplatform.ErgoAddress
 import sigmastate.Values.{ConstantNode, ErgoTree}
 import sigmastate._
+import sigmastate.crypto.CryptoConstants.EcPointType
 import sigmastate.eval.{bigIntToBigInteger, _}
-import sigmastate.interpreter.CryptoConstants.EcPointType
 import sigmastate.serialization.ErgoTreeSerializer.DefaultSerializer
 import sigmastate.serialization.{GroupElementSerializer, ValueSerializer}
-import special.collection.Coll
-import special.sigma.{BigInt, GroupElement}
+import sigma.{BigInt, Coll, GroupElement}
 
 import scala.util.Try
 object ScalaErgoConverters {
