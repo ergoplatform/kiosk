@@ -5,9 +5,8 @@ import org.ergoplatform.ErgoAddressEncoder
 import org.ergoplatform.ErgoAddressEncoder.MainnetNetworkPrefix
 import sigmastate.Values.ErgoTree
 import sigmastate.eval.CompiletimeIRContext
-import sigmastate.lang.{CheckingSigmaBuilder, CompilerSettings, SigmaCompiler, StdSigmaBuilder, TransformingSigmaBuilder}
+import sigmastate.lang.{CompilerSettings, SigmaCompiler, TransformingSigmaBuilder}
 import sigma.GroupElement
-import sigmastate.interpreter.Interpreter.ScriptEnv
 
 import scala.collection.mutable.{Map => MMap}
 
@@ -31,7 +30,6 @@ object ScriptUtil {
     import sigmastate.lang.Terms._
     implicit val irContext = new CompiletimeIRContext
     compiler.compile(env.view.mapValues(_.value).toMap, ergoScript).buildTree.asBoolValue.asSigmaProp
-    // old  .compile(env.mapValues(_.value), ergoScript).asInstanceOf[Value[SBoolean.type]].toSigmaProp
   }
 
   implicit def mapToBetterMMap(map: MMap[String, KioskType[_]]): BetterMMap = BetterMMap(map)

@@ -1,7 +1,7 @@
 package kiosk.script
 
 import kiosk.ErgoUtil
-import kiosk.appkit.Client
+import kiosk.appkit.{Client, Nodes}
 import kiosk.encoding.ScalaErgoConverters
 import kiosk.ergo._
 import org.bouncycastle.util.encoders.Hex
@@ -27,7 +27,7 @@ class ScriptSpec extends AnyWordSpec with Matchers {
           |  proveDHTuple(g, c1, gX, c2) // or c1 is g^y and c2 = gX^y = g^xy
           |}""".stripMargin
 
-      Client.usingContext { implicit ctx =>
+      Client.usingContext(Nodes.urls(2)) { implicit ctx =>
         val appkitErgoTree = ctx
           .compileContract(
             ConstantsBuilder.empty(),
@@ -54,7 +54,7 @@ class ScriptSpec extends AnyWordSpec with Matchers {
           |}""".stripMargin
 
       val x = BigInt("1120347812374928374923042340293450928435285028435028435")
-      Client.usingContext { implicit ctx =>
+      Client.usingContext(Nodes.urls(2)) { implicit ctx =>
         val kioskErgoTree = ScriptUtil.compile(Map("gX" -> KioskGroupElement(ErgoUtil.gX(x))), ergoScript).bytes.encodeHex
 
         // then compute using appkit
@@ -90,7 +90,7 @@ class ScriptSpec extends AnyWordSpec with Matchers {
       val long = 209384592083L
       val bigInt = BigInt("230948092384598209582958205802850298529085")
 
-      Client.usingContext { implicit ctx =>
+      Client.usingContext(Nodes.urls(2)) { implicit ctx =>
         val map = Map(
           "gX" -> KioskGroupElement(ErgoUtil.gX(x)),
           "hash" -> KioskCollByte(hash),
@@ -145,7 +145,7 @@ class ScriptSpec extends AnyWordSpec with Matchers {
 
       val hash: Array[Byte] = "1000d801d601e4c6a70507eb02cd7201cedb6a01dde4c6a70407e4c6a706077201".decodeHex
 
-      Client.usingContext { implicit ctx =>
+      Client.usingContext(Nodes.urls(2)) { implicit ctx =>
         val kioskErgoTree = ScriptUtil.compile(Map("hash" -> KioskCollByte(hash)), ergoScript).bytes.encodeHex
 
         val appkitErgoTree: String = ctx

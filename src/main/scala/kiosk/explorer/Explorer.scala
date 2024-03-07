@@ -3,7 +3,7 @@ package kiosk.explorer
 import kiosk.encoding.ScalaErgoConverters
 import kiosk.ergo.{KioskBox, KioskType, Token}
 import io.circe.Json
-import kiosk.appkit.Client
+import kiosk.appkit.{Client, Nodes}
 
 import scala.util.Try
 
@@ -20,7 +20,7 @@ class Explorer {
     Curl.get(boxUrl + boxId)
   }
 
-  def getHeight: Int = Client.usingContext(_.getHeight)
+  def getHeight: Int = Client.usingContext(Nodes.urls(2))(_.getHeight)
 
   private def getBoxFromJson(j: Json): KioskBox = {
     val id = (j \\ "id").map(v => v.asString.get).apply(0)
