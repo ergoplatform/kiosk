@@ -7,8 +7,6 @@ import org.ergoplatform.appkit.impl.BlockchainContextBuilderImpl;
 import org.ergoplatform.appkit.impl.NodeAndExplorerDataSourceImpl;
 import org.ergoplatform.explorer.client.ExplorerApiClient;
 import org.ergoplatform.restapi.client.ApiClient;
-import org.scalatest.tags.Network;
-
 import java.io.IOException;
 import java.util.List;
 import java.util.function.Function;
