@@ -1,10 +1,11 @@
 package kiosk.oraclepool.v2
 
 import kiosk.ergo._
-import org.scalatest.{Matchers, PropSpec}
 import scorex.crypto.hash.Blake2b256
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.propspec.AnyPropSpec
 
-class OraclePoolDemo extends PropSpec with OraclePool with Matchers {
+class OraclePoolDemo extends AnyPropSpec with OraclePool with Matchers {
   val minBoxValue = 2000000
   override lazy val livePeriod = 5 // blocks
   override lazy val prepPeriod = 5 // blocks

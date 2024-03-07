@@ -1,10 +1,11 @@
 package kiosk.oraclepool.v3
 
 import kiosk.ergo._
-import org.scalatest.{Matchers, PropSpec}
 import scorex.crypto.hash.Blake2b256
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.propspec.AnyPropSpec
 
-class OraclePoolDemo extends PropSpec with OraclePool with Matchers {
+class OraclePoolDemo extends AnyPropSpec with OraclePool with Matchers {
   lazy val minBoxValue = 2000000 // min value to remain AFTER paying rewards. For min value to keep BEFORE rewards, see minPoolBoxValue
   override def livePeriod = 20 // blocks
   override def prepPeriod = 10 // blocks

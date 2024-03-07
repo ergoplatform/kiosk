@@ -4,10 +4,10 @@ import kiosk.ErgoUtil
 import kiosk.encoding.ScalaErgoConverters
 import kiosk.ergo.{ByteArrayToBetterByteArray, DhtData, KioskBox, KioskCollByte, KioskGroupElement, KioskInt, KioskLong}
 import kiosk.tx.TxUtil
-import org.ergoplatform.appkit.{BlockchainContext, ConstantsBuilder, ErgoToken, HttpClientTesting, InputBox}
-import org.scalatest.{Matchers, PropSpec}
-import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
+import org.ergoplatform.appkit.{BlockchainContext, ConstantsBuilder, InputBox, MockErgoClient}
+import org.ergoplatform.sdk.ErgoToken
 import scorex.crypto.hash.Blake2b256
+
 
 /*
  * This tests that the (modified) data point script does not get the oracle-pool into a locked state due to non-existence of data-point boxes
@@ -34,7 +34,7 @@ import scorex.crypto.hash.Blake2b256
  * Once we are back to the epoch prep state, we can do further updates (we say that the pool is "recoverable")
  */
 
-class RecoverLiveEpochBoxSpec extends PropSpec with Matchers with ScalaCheckDrivenPropertyChecks with HttpClientTesting {
+class RecoverLiveEpochBoxSpec extends MockErgoClient {
   /*
   In Oracle Pool v7, the epochPrepScript has two spending paths:
   1. poolAction
@@ -47,12 +47,11 @@ class RecoverLiveEpochBoxSpec extends PropSpec with Matchers with ScalaCheckDriv
   val dummyTxId = "f9e5ce5aa0d95f5d54a7bc89c46730d9662397067250aa18a0039631c0f5b809"
   val dummyScript = "sigmaProp(true)"
 
-  val ergoClient = createMockedErgoClient(MockData(Nil, Nil))
 
   val fee = 1500000
 
-  property("Recover broken update") {
-    ergoClient.execute { implicit ctx: BlockchainContext =>
+  property("Recover broken update") { ergo =>
+    ergo.client.execute { implicit ctx: BlockchainContext =>
       val poolBoxValue = 1000000000L
 
       val oldOraclePool = new OraclePoolParams {}
@@ -353,7 +352,7 @@ class RecoverLiveEpochBoxSpec extends PropSpec with Matchers with ScalaCheckDriv
         val collectDataInputs: Array[DataPointBox] = dataPointPairs.unzip._1.unzip._1
         val dataPoints: Array[DataPoint] = dataPointPairs.unzip._1.unzip._2
         val addresses: Array[Address] = dataPointPairs.unzip._2.unzip._1
-        val privateKey: PrivateKey = dataPointPairs.unzip._2.unzip._2(0)
+        val privateKey: PrivateKey = dataPointPairs.unzip._2.unzip._2.head
 
         collect(collectDataInputs, dataPoints, addresses, privateKey)
       }

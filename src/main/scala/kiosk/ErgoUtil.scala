@@ -4,9 +4,9 @@ import kiosk.encoding.ScalaErgoConverters
 import kiosk.ergo._
 import kiosk.explorer.Explorer
 import scorex.util.encode.Base58
-import sigmastate.basics.SecP256K1
+import sigmastate.crypto.SecP256K1Group
 import sigmastate.eval.{SigmaDsl, _}
-import special.sigma.GroupElement
+import sigma.GroupElement
 
 import java.security.SecureRandom
 
@@ -17,7 +17,7 @@ object ErgoUtil {
     val random = new SecureRandom()
     val values = new Array[Byte](32)
     random.nextBytes(values)
-    BigInt(values).mod(SecP256K1.q)
+    BigInt(values).mod(SecP256K1Group.q)
   }
 
   def hexToDecimal(hex: String) = BigInt(hex, 16)
@@ -27,7 +27,7 @@ object ErgoUtil {
   def getBoxById(id: String) = explorer.getBoxById(id)
 
   def gX(x: BigInt) = {
-    SigmaDsl.GroupElement(SecP256K1.generator).exp(x.bigInteger)
+    SigmaDsl.GroupElement(SecP256K1Group.generator).exp(x.bigInteger)
   }
 
   def hX(h: String, x: BigInt): GroupElement = {

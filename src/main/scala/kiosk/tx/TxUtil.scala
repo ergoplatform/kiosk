@@ -2,8 +2,9 @@ package kiosk.tx
 
 import kiosk.encoding.ScalaErgoConverters.getAddressFromString
 import kiosk.ergo.{DhtData, KioskBox, KioskType, Token, decodeBigInt}
-import org.ergoplatform.appkit.{BlockchainContext, ErgoToken, InputBox, OutBox, OutBoxBuilder, SignedTransaction}
+import org.ergoplatform.appkit.{Address, BlockchainContext, InputBox, OutBox, OutBoxBuilder, SignedTransaction}
 import org.ergoplatform.appkit.impl.ErgoTreeContract
+import org.ergoplatform.sdk.ErgoToken
 
 import java.util
 
@@ -41,7 +42,7 @@ object TxUtil {
         .outBoxBuilder()
         .value(box.value)
         .contract(
-          new ErgoTreeContract(getAddressFromString(box.address).script)
+          new ErgoTreeContract(getAddressFromString(box.address).script, ctx.getNetworkType)
         )
       val outBoxBuilderWithTokens: OutBoxBuilder =
         addTokens(outBoxBuilder)(box.tokens)
@@ -49,21 +50,14 @@ object TxUtil {
         addRegisters(outBoxBuilderWithTokens)(box.registers).build
       outBox
     }
-    val inputs = new util.ArrayList[InputBox]()
-
-    inputBoxes.foreach(inputs.add)
-
-    val dataInputBoxes = new util.ArrayList[InputBox]()
-
-    dataInputs.foreach(dataInputBoxes.add)
 
     val txToSign = ctx
       .newTxBuilder()
-      .boxesToSpend(inputs)
-      .withDataInputs(dataInputBoxes)
-      .outputs(outputBoxes: _*)
+      .addInputs(inputBoxes: _*)
+      .addDataInputs(dataInputs: _*)
+      .addOutputs(outputBoxes: _*)
       .fee(fee)
-      .sendChangeTo(getAddressFromString(changeAddress))
+      .sendChangeTo(new Address(getAddressFromString(changeAddress)))
       .build()
 
     val proveDlogSecretsBigInt = proveDlogSecrets.map(decodeBigInt)

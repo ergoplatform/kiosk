@@ -2,22 +2,20 @@ package kiosk.timestamp.v2
 
 import kiosk.ergo.{DhtData, KioskBox, KioskCollByte, KioskInt}
 import kiosk.tx.TxUtil
-import org.ergoplatform.appkit.{BlockchainContext, ConstantsBuilder, ErgoToken, HttpClientTesting, InputBox, SignedTransaction}
-import org.scalatest.{Matchers, PropSpec}
-import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
+import org.ergoplatform.appkit.{BlockchainContext, ConstantsBuilder, InputBox, MockErgoClient, SignedTransaction}
+import org.ergoplatform.sdk.ErgoToken
 
 import scala.util.Try
 
-class TimestampSpec extends PropSpec with Matchers with ScalaCheckDrivenPropertyChecks with HttpClientTesting {
+class TimestampSpec extends MockErgoClient {
 
-  val ergoClient = createMockedErgoClient(MockData(Nil, Nil))
   val changeAddress = "9f5ZKbECVTm25JTRQHDHGM5ehC8tUw5g1fCBQ4aaE792rWBFrjK"
   val token = "12caaacb51c89646fac9a3786eb98d0113bd57d68223ccc11754a4f67281daed"
   val dummyTxId = "f9e5ce5aa0d95f5d54a7bc89c46730d9662397067250aa18a0039631c0f5b809"
   val dummyScript = "{sigmaProp(1 < 2)}"
 
-  property("One complete epoch") {
-    ergoClient.execute { implicit ctx: BlockchainContext =>
+  property("One complete epoch") { ergo =>
+    ergo.client.execute { implicit ctx: BlockchainContext =>
       val initialTokens = 1000000000L
       val masterBoxInTokens = (token, initialTokens)
       val dummyTokens = new ErgoToken(token, initialTokens)

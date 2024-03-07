@@ -1,10 +1,10 @@
 package kiosk.explorer
 
 import io.circe.{Json, parser}
-import org.scalatest.Matchers.convertToAnyShouldWrapper
-import org.scalatest.PropSpec
+import org.scalatest.matchers.should.Matchers.convertToAnyShouldWrapper
+import org.scalatest.propspec.AnyPropSpec
 
-class ExplorerTest extends PropSpec {
+class ExplorerTest extends AnyPropSpec {
   property("Json Test") {
     def parse(string: String) = parser.parse(string).getOrElse(???)
     val explorer = new Explorer

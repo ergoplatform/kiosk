@@ -4,11 +4,11 @@ import kiosk.ErgoUtil
 import kiosk.ergo._
 import kiosk.script.ScriptUtil
 import org.ergoplatform.Pay2SAddress
-import org.scalatest.{Matchers, WordSpec}
-
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import scala.collection.mutable.{Map => MMap}
 
-class AuctionSpec extends WordSpec with Matchers with Auction {
+class AuctionSpec extends AnyWordSpec with Matchers with Auction {
 
   import kiosk.script.ScriptUtil._
 

@@ -4,16 +4,15 @@ import kiosk.ergo._
 import kiosk.tx.TxUtil
 import org.ergoplatform.appkit.impl.ErgoTreeContract
 import org.ergoplatform.appkit._
-import org.scalatest.{Matchers, PropSpec}
-import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
+import org.ergoplatform.sdk.ErgoToken
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.propspec.AnyPropSpec
 
-class OraclePoolFundingSpec extends PropSpec with Matchers with ScalaCheckDrivenPropertyChecks with HttpClientTesting {
+class OraclePoolFundingSpec extends MockErgoClient {
 
-  val ergoClient = createMockedErgoClient(MockData(Nil, Nil))
 
-  property("Fund collection") {
-
-    ergoClient.execute { implicit ctx: BlockchainContext =>
+  property("Fund collection") { ergo =>
+    ergo.client.execute { implicit ctx: BlockchainContext =>
       val pool = new OraclePool {
         val minBoxValue = 2000000
         override lazy val livePeriod = 4 // blocks
@@ -68,7 +67,7 @@ class OraclePoolFundingSpec extends PropSpec with Matchers with ScalaCheckDriven
           r4epochPrep.getErgoValue,
           r5epochPrep.getErgoValue
         )
-        .contract(new ErgoTreeContract(pool.epochPrepErgoTree))
+        .contract(new ErgoTreeContract(pool.epochPrepErgoTree, ctx.getNetworkType))
         .build()
         .convertToInputWith(dummyTxId0, 0)
 

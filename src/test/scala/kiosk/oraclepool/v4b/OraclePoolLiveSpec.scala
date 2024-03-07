@@ -5,16 +5,15 @@ import kiosk.encoding.ScalaErgoConverters
 import kiosk.ergo._
 import kiosk.tx.TxUtil
 import org.ergoplatform.appkit._
-import org.scalatest.{Matchers, PropSpec}
-import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
+import org.ergoplatform.sdk.ErgoToken
 import scorex.crypto.hash.Blake2b256
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.propspec.AnyPropSpec
 
-class OraclePoolLiveSpec extends PropSpec with Matchers with ScalaCheckDrivenPropertyChecks with HttpClientTesting {
-  val ergoClient = createMockedErgoClient(MockData(Nil, Nil))
+class OraclePoolLiveSpec extends MockErgoClient {
 
-  property("One complete epoch") {
-
-    ergoClient.execute { implicit ctx: BlockchainContext =>
+  property("One complete epoch") { ergo =>
+    ergo.client.execute { implicit ctx: BlockchainContext =>
       val pool = new OraclePoolLive {
         lazy val addresses = Seq(
           "9eiuh5bJtw9oWDVcfJnwTm1EHfK5949MEm5DStc2sD1TLwDSrpx", // private key is 37cc5cb5b54f98f92faef749a53b5ce4e9921890d9fb902b4456957d50791bd0
@@ -217,7 +216,7 @@ class OraclePoolLiveSpec extends PropSpec with Matchers with ScalaCheckDrivenPro
         val collectDataInputs: Array[DataPointBox] = dataPointPairs.unzip._1.unzip._1
         val dataPoints: Array[DataPoint] = dataPointPairs.unzip._1.unzip._2
         val addresses: Array[Address] = dataPointPairs.unzip._2.unzip._1
-        val privateKey: PrivateKey = dataPointPairs.unzip._2.unzip._2(0)
+        val privateKey: PrivateKey = dataPointPairs.unzip._2.unzip._2.head
 
         collect(collectDataInputs, dataPoints, addresses, privateKey)
       }

@@ -4,12 +4,12 @@ import kiosk.ErgoUtil
 import kiosk.ergo._
 import kiosk.script.ScriptUtil
 import org.ergoplatform.Pay2SAddress
-import org.scalatest.{Matchers, WordSpec}
 import scorex.crypto.hash.Blake2b256
-
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import scala.collection.mutable.{Map => MMap}
 
-class OneWayUSDTokenSpec extends WordSpec with Matchers with OneWayUSDToken {
+class OneWayUSDTokenSpec extends AnyWordSpec with Matchers with OneWayUSDToken {
 
   "OneWayUSDToken script" should {
     "compile correctly" in {
