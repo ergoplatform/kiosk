@@ -1,6 +1,6 @@
 # Kiosk
 
-[![Build Status](https://travis-ci.org/ccellado/Kiosk.svg?branch=master)](https://travis-ci.org/scalahub/Kiosk)
+[![CI](https://github.com/ergoplatform/kiosk/actions/workflows/ci.yml/badge.svg)](https://github.com/ergoplatform/kiosk/actions/workflows/ci.yml)
 
 A library on top of Ergo-Appkit for interacting with the Ergo Blockchain
 
