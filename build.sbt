@@ -1,14 +1,22 @@
-
 name := "kiosk"
-version := "1.0"
-updateOptions := updateOptions.value.withLatestSnapshots(false)
+organization := "org.ergoplatform"
+version := "1.0.0"
+//updateOptions := updateOptions.value.withLatestSnapshots(false)
 scalaVersion := "2.13.12"
+licenses := Seq("CC0" -> url("https://creativecommons.org/publicdomain/zero/1.0/legalcode"))
+publishTo := sonatypePublishToBundle.value
+scmInfo := Some(
+  ScmInfo(
+    url("https://github.com/ergoplatform/kiosk"),
+    "scm:git@github.com:ergoplatform/kiosk.git"
+  )
+)
 
 libraryDependencies ++= Seq(
   "org.scala-lang.modules" %% "scala-collection-compat" % "2.11.0",
   "org.ergoplatform" %% "ergo-appkit" % "5.0.4",
-  "com.squareup.okhttp3" % "mockwebserver" % "4.12.0" % Test,
-  "org.scalatest" %% "scalatest" % "3.2.18" % Test,
+  "com.squareup.okhttp3" % "mockwebserver" % "4.12.0",
+  "org.scalatest" %% "scalatest" % "3.2.18",
   "org.scalatestplus" %% "scalacheck-1-17" % "3.2.18.0" % Test,
   "org.scalacheck" %% "scalacheck" % "1.17.0" % Test,
   "org.mockito" % "mockito-core" % "5.11.0" % Test
@@ -41,6 +49,11 @@ pgpPublicRing := file("ci/pubring.asc")
 pgpSecretRing := file("ci/secring.asc")
 pgpPassphrase := sys.env.get("PGP_PASSPHRASE").map(_.toArray)
 usePgpKeyHex("D78982639AD538EF361DEC6BF264D529385A0333")
+
+credentials ++= (for {
+  username <- Option(System.getenv().get("SONATYPE_USERNAME"))
+  password <- Option(System.getenv().get("SONATYPE_PASSWORD"))
+} yield Credentials("Sonatype Nexus Repository Manager", "oss.sonatype.org", username, password)).toSeq
 
 // prefix version with "-SNAPSHOT" for builds without a git tag
 ThisBuild / dynverSonatypeSnapshots := true
