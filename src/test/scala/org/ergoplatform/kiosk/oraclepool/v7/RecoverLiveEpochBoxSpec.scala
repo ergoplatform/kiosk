@@ -5,7 +5,9 @@ import org.ergoplatform.kiosk.encoding.ScalaErgoConverters
 import org.ergoplatform.kiosk.ergo.{ByteArrayToBetterByteArray, DhtData, KioskBox, KioskCollByte, KioskGroupElement, KioskInt, KioskLong}
 import org.ergoplatform.kiosk.tx.TxUtil
 import org.ergoplatform.appkit.{BlockchainContext, ConstantsBuilder, InputBox}
-import org.ergoplatform.kiosk.appkit.MockErgoClient
+import org.ergoplatform.kiosk.appkit.HttpClientTesting.createMockedErgoClient
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.propspec.AnyPropSpec
 import org.ergoplatform.sdk.ErgoToken
 import scorex.crypto.hash.Blake2b256
 
@@ -35,7 +37,7 @@ import scorex.crypto.hash.Blake2b256
  * Once we are back to the epoch prep state, we can do further updates (we say that the pool is "recoverable")
  */
 
-class RecoverLiveEpochBoxSpec extends MockErgoClient {
+class RecoverLiveEpochBoxSpec extends AnyPropSpec with Matchers {
   /*
   In Oracle Pool v7, the epochPrepScript has two spending paths:
   1. poolAction
@@ -51,8 +53,8 @@ class RecoverLiveEpochBoxSpec extends MockErgoClient {
 
   val fee = 1500000
 
-  property("Recover broken update") { ergo =>
-    ergo.client.execute { implicit ctx: BlockchainContext =>
+  property("Recover broken update") {
+    createMockedErgoClient().execute { implicit ctx: BlockchainContext =>
       val poolBoxValue = 1000000000L
 
       val oldOraclePool = new OraclePoolParams {}

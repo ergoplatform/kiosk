@@ -5,14 +5,16 @@ import org.ergoplatform.kiosk.encoding.ScalaErgoConverters
 import org.ergoplatform.kiosk.ergo._
 import org.ergoplatform.kiosk.tx.TxUtil
 import org.ergoplatform.appkit._
-import org.ergoplatform.kiosk.appkit.MockErgoClient
+import org.ergoplatform.kiosk.appkit.HttpClientTesting.createMockedErgoClient
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.propspec.AnyPropSpec
 import org.ergoplatform.sdk.ErgoToken
 import scorex.crypto.hash.Blake2b256
 
-class OraclePoolSpec extends MockErgoClient {
+class OraclePoolSpec extends AnyPropSpec with Matchers {
 
-  property("One complete epoch") { ergo =>
-    ergo.client.execute { implicit ctx: BlockchainContext =>
+  property("One complete epoch") {
+    createMockedErgoClient().execute { implicit ctx: BlockchainContext =>
       val pool = new OraclePoolParams {
         lazy val addresses = Seq(
           "9eiuh5bJtw9oWDVcfJnwTm1EHfK5949MEm5DStc2sD1TLwDSrpx", // private key is 37cc5cb5b54f98f92faef749a53b5ce4e9921890d9fb902b4456957d50791bd0

@@ -4,18 +4,20 @@ import org.ergoplatform.kiosk.ergo.{DhtData, KioskBox, KioskCollByte, KioskInt, 
 import Branch.branchBoxAddress
 import org.ergoplatform.kiosk.tx.TxUtil
 import org.ergoplatform.appkit.{BlockchainContext, ConstantsBuilder, InputBox, SignedTransaction}
-import org.ergoplatform.kiosk.appkit.MockErgoClient
+import org.ergoplatform.kiosk.appkit.HttpClientTesting.createMockedErgoClient
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.propspec.AnyPropSpec
 
 import scala.util.Try
 
-class BranchSpec extends MockErgoClient {
+class BranchSpec extends AnyPropSpec with Matchers {
 
   val changeAddress = "9f5ZKbECVTm25JTRQHDHGM5ehC8tUw5g1fCBQ4aaE792rWBFrjK"
   val dummyTxId = "f9e5ce5aa0d95f5d54a7bc89c46730d9662397067250aa18a0039631c0f5b809"
   val dummyScript = "{sigmaProp(1 < 2)}"
 
-  property("Not-so-lazy evaluation") { ergo =>
-    ergo.client.execute { implicit ctx: BlockchainContext =>
+  property("Not-so-lazy evaluation") {
+    createMockedErgoClient().execute { implicit ctx: BlockchainContext =>
       assert(branchBoxAddress == "88dwYDNXcCq9UyA7VBcSdqJRgooKVqS8ixprCknxcm2sba4jbhQYGphjutEebtr3ZeC4tmT9oEWKS2Bq")
 
       val fee = 1500000

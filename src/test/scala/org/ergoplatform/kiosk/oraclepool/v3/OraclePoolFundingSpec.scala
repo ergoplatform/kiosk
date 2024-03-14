@@ -4,14 +4,16 @@ import org.ergoplatform.kiosk.ergo._
 import org.ergoplatform.kiosk.tx.TxUtil
 import org.ergoplatform.appkit.impl.ErgoTreeContract
 import org.ergoplatform.appkit._
-import org.ergoplatform.kiosk.appkit.MockErgoClient
+import org.ergoplatform.kiosk.appkit.HttpClientTesting.createMockedErgoClient
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.propspec.AnyPropSpec
 import org.ergoplatform.sdk.ErgoToken
 
-class OraclePoolFundingSpec extends MockErgoClient {
+class OraclePoolFundingSpec extends AnyPropSpec with Matchers {
 
 
-  property("Fund collection") { ergo =>
-    ergo.client.execute { implicit ctx: BlockchainContext =>
+  property("Fund collection") {
+    createMockedErgoClient().execute { implicit ctx: BlockchainContext =>
       val pool = new OraclePool {
         val minBoxValue = 2000000
         override lazy val livePeriod = 4 // blocks

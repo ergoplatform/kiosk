@@ -2,13 +2,15 @@ package org.ergoplatform.kiosk.multisecret
 
 import org.ergoplatform.kiosk.ergo._
 import org.ergoplatform.kiosk.tx.TxUtil
-import org.ergoplatform.appkit.{BlockchainContext, ConstantsBuilder,InputBox}
-import org.ergoplatform.kiosk.appkit.MockErgoClient
+import org.ergoplatform.appkit.{BlockchainContext, ConstantsBuilder, InputBox}
+import org.ergoplatform.kiosk.appkit.HttpClientTesting.createMockedErgoClient
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.propspec.AnyPropSpec
 import sigmastate.eval._
 import sigma.GroupElement
 import sigmastate.crypto.CryptoConstants
 
-class MultiProveDlogSpec extends MockErgoClient {
+class MultiProveDlogSpec extends AnyPropSpec with Matchers {
 
   val changeAddress = "9f5ZKbECVTm25JTRQHDHGM5ehC8tUw5g1fCBQ4aaE792rWBFrjK"
   val dummyTxId1 = "d9e5ce5aa0d95f5d54a7bc89c46730d9662397067250aa18a0039631c0f5b809"
@@ -22,8 +24,8 @@ class MultiProveDlogSpec extends MockErgoClient {
   private val gX: GroupElement = defaultGenerator.exp(secret1.bigInteger)
   private val gY: GroupElement = defaultGenerator.exp(secret2.bigInteger)
 
-  property("Multi proveDlog") { ergo =>
-    ergo.client.execute { implicit ctx: BlockchainContext =>
+  property("Multi proveDlog") {
+    createMockedErgoClient().execute { implicit ctx: BlockchainContext =>
       val fee = 1500000
       val contract1 = ctx.compileContract(
         ConstantsBuilder

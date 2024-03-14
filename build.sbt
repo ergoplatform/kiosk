@@ -16,7 +16,7 @@ libraryDependencies ++= Seq(
   "org.scala-lang.modules" %% "scala-collection-compat" % "2.11.0",
   "org.ergoplatform" %% "ergo-appkit" % "5.0.4",
   "com.squareup.okhttp3" % "mockwebserver" % "4.12.0",
-  "org.scalatest" %% "scalatest" % "3.2.18",
+  "org.scalatest" %% "scalatest" % "3.2.18" % Test,
   "org.scalatestplus" %% "scalacheck-1-17" % "3.2.18.0" % Test,
   "org.scalacheck" %% "scalacheck" % "1.17.0" % Test,
   "org.mockito" % "mockito-core" % "5.11.0" % Test

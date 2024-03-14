@@ -121,28 +121,16 @@ public class FileMockedErgoClient implements MockedErgoClient {
     public <T> T execute(Function<BlockchainContext, T> action) {
         BlockchainContext ctx =
                 new BlockchainContextBuilderImpl(_dataSource, NetworkType.MAINNET).build();
-
         T res = action.apply(ctx);
 
-        return res;
-    }
-
-    public void start() {
         try {
-            _node.start();
-            _explorer.start();
-        } catch (IOException e) {
-            throw new ErgoClientException("Cannot start server " + _node.toString(), e);
-        }
-    }
-
-    public void stop() {
-        try {
-            _explorer.shutdown();
-            _node.shutdown();
+            _explorer.close();
+            _node.close();
         } catch (IOException e) {
             throw new ErgoClientException("Cannot shutdown server " + _node.toString(), e);
         }
+
+        return res;
     }
 }
 

@@ -4,13 +4,15 @@ import org.ergoplatform.kiosk.encoding.ScalaErgoConverters
 import org.ergoplatform.kiosk.ergo._
 import org.ergoplatform.kiosk.tx.TxUtil
 import org.ergoplatform.appkit._
-import org.ergoplatform.kiosk.appkit.MockErgoClient
+import org.ergoplatform.kiosk.appkit.HttpClientTesting.createMockedErgoClient
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.propspec.AnyPropSpec
 import org.ergoplatform.sdk.ErgoToken
 import scorex.crypto.hash.Blake2b256
 
 import scala.util.Try
 
-class VotingSpec extends MockErgoClient {
+class VotingSpec extends AnyPropSpec with Matchers {
   /*
   In v0.2, the update box has two spending paths
   1. Update
@@ -25,8 +27,8 @@ class VotingSpec extends MockErgoClient {
 
   val fee = 1500000
 
-  property("Voting") { ergo =>
-    ergo.client.execute { implicit ctx: BlockchainContext =>
+  property("Voting") {
+    createMockedErgoClient().execute { implicit ctx: BlockchainContext =>
       val epochPool = new OraclePoolParams {}
       val newOraclePool = new OraclePoolParams {
         override lazy val maxNumOracles = 13
