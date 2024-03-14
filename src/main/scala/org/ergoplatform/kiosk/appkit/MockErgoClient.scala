@@ -13,7 +13,6 @@ abstract class MockErgoClient extends FixtureAnyPropSpec with Matchers {
 
   def withFixture(test: OneArgTest) = {
       try {
-//        ergoClient.start()
       test(FixtureParam(ergoClient))
     }
     finally {

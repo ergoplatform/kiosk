@@ -33,7 +33,7 @@ object HttpClientTesting {
     def empty = MockData()
   }
 
-  def createMockedErgoClient(data: MockData): appkit.FileMockedErgoClient = {
+  def createMockedErgoClient(data: MockData = MockData(Nil, Nil)): appkit.FileMockedErgoClient = {
     val nodeResponses = Seq(
       loadNodeResponse("response_NodeInfo.json"),
       loadNodeResponse("response_LastHeaders.json")) ++ data.nodeResponses
